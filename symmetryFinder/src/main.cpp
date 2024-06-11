@@ -12,9 +12,11 @@
 int main(){
 
     //Define the point cloud on a plane
-    std::vector<Point> points{
+    std::vector<Point2D> points{
       {1, 4.0, 2.0},
-      {2, 1.0, 8.0}
+      {1, 4.0, 2.0},
+      {2, 1.0, 8.0},
+      {3, 1.0, 8.0}
     };
 
     //Define the arbitrary line against which symmetry must be checked
@@ -22,8 +24,11 @@ int main(){
     double a = 2.; double b = -4.; double c = 15.;
 
     //Check for symmetry
-    Kernels::IsSymmetricSet(points, a, b, c);
-
+    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    if(isSetSymmetrical)
+      std::cout<<" The given points on the plane are symmetrical wrt the given line\n";
+    else
+      std::cout<<" The given points on the plance are not symmetrical wrt the given line\n";
 
     return 0;
 
