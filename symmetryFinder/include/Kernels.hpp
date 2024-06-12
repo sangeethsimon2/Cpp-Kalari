@@ -18,7 +18,7 @@ namespace Kernels{
    //Custom equality function to allow key comparisons
     struct equalFunc{
         bool operator() ( const Point2D& firstPoint, const Point2D& secondPoint) const{
-          return ( ((firstPoint.m_x-secondPoint.m_x)<epsilon) && ((firstPoint.m_y-secondPoint.m_y)<epsilon));
+          return ( (std::fabs(firstPoint.m_x-secondPoint.m_x)<epsilon) && (std::fabs(firstPoint.m_y-secondPoint.m_y)<epsilon));
         }
     };
 
