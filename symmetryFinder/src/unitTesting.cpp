@@ -49,6 +49,7 @@ TEST(Point2DReflectionTest, ReflectionOnYAxis) {
     EXPECT_EQ(reflectedPoint, expectedReflectedPoint);
 }
 
+//Test for checking if a known pair of points are symmetrical wrt a known symmetry line
 TEST(Point2DCloudSymmetryTest, 2PointsSymmetryAboutAKnownSymmetryLine){
 
     //Define the point cloud on a plane
@@ -56,16 +57,62 @@ TEST(Point2DCloudSymmetryTest, 2PointsSymmetryAboutAKnownSymmetryLine){
       {1, 4.0, 2.0},
       {2, 1.0, 8.0},
     };
-
     double a = 2.; double b = -4.; double c = 15.;
-
     bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
 
     EXPECT_TRUE(isSetSymmetrical);
 }
 
+//Test for checking if a known group of points are NOT symmetrical wrt a line
+TEST(Point2DCloudSymmetryTest, 3PointsNonSymmetryAboutALine){
+
+    //Define the point cloud on a plane
+    std::vector<Point2D> points{
+      {1, 4.0, 2.0},
+      {2, 1.0, 8.0},
+      {3, 2.0, 9.0}
+    };
+    double a = 2.; double b = -4.; double c = 15.;
+    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+
+    EXPECT_FALSE(isSetSymmetrical);
+}
+
+//Test to check for symmetry within a point cloud containing duplicate points about a known symmetry line
+TEST(Point2DCloudSymmetryTest, duplicityType1InSymmetryAboutASymmetryLine){
+
+    //Define the point cloud on a plane
+    std::vector<Point2D> points{
+      {1, 4.0, 2.0},
+      {2, 1.0, 8.0},
+      {2, 1.0, 8.0},
+      {2, 1.0, 8.0}
+    };
+    double a = 2.; double b = -4.; double c = 15.;
+    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+
+    EXPECT_TRUE(isSetSymmetrical);
+}
+
+//Test to check for symmetry within a point cloud containing duplicate points about a known symmetry line
+TEST(Point2DCloudSymmetryTest, duplicityType2InSymmetryAboutASymmetryLine){
+
+    //Define the point cloud on a plane
+    std::vector<Point2D> points{
+      {1, 4.0, 2.0},
+      {1, 4.0, 2.0},
+      {1, 4.0, 2.0},
+      {1, 4.0, 2.0},
+      {2, 1.0, 8.0}
+    };
+    double a = 2.; double b = -4.; double c = 15.;
+    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+
+    EXPECT_TRUE(isSetSymmetrical);
+}
+
+//Driver to initiate tests
 int main(int argc, char** argv){
     ::testing::InitGoogleTest(&argc, argv);
-
     return RUN_ALL_TESTS();
 }
