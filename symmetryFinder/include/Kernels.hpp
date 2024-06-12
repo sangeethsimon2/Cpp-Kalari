@@ -35,10 +35,14 @@ namespace Kernels{
 
 
    bool IsSymmetricSet(const std::vector<Point2D>& points, const int a, const int b, const int c){
-      //Declare an unordered_map that has key: Point2D and value: number of symmetry associations
+      //Declare a bool that acts as a flag to indicate if the point cloud is symmetric
+      //Default: assume that the set is symmetric
+      bool isSymmetricSet = true;
+
+      //Declare an unordered_map that has key: Point2D and value: number of times the point is encountered
       std::unordered_map<Point2D, int, hashFunc, equalFunc> Point2DSet;
 
-      //For each new point encountered from the container, increment a counter to indicate that its reflection needs to be searched for
+      //For each new point encountered from the container, increment a counter to indicate its presence
       for(const auto& eachPoint: points)
         Point2DSet[eachPoint]++;
 
@@ -48,24 +52,23 @@ namespace Kernels{
         Point2D reflectedPoint = constructReflection( eachPoint, a, b, c);
         //Check if this reflected point does not exist in the given set
         if (Point2DSet.find(reflectedPoint) == Point2DSet.end()) {
-            return false;// Indicates that the set of points is not symmetrical wrt the given line
+            isSymmetricSet = false;
+            return isSymmetricSet;// Indicates that the set of points is not symmetrical wrt the given line
         }
         //If it does exist,
         else {
-            Point2DSet[reflectedPoint]--;
-            if (Point2DSet[reflectedPoint] == 0) {
-              Point2DSet.erase(reflectedPoint);
-            }
+              if(Point2DSet[eachPoint]>0)
+                Point2DSet[eachPoint]--;
+              if(Point2DSet[eachPoint]==0 && Point2DSet[reflectedPoint]==0)
+                Point2DSet.erase(reflectedPoint);
         }
       }
-      return true;
+      return isSymmetricSet;
     }
 
     //Custom sign function
     template <typename T> int Sign(T val) {
        return (T(0) < val) - (val < T(0));
     }
-
-
 }
 #endif
