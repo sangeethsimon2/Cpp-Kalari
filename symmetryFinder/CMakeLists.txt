@@ -23,6 +23,9 @@ add_executable( unitTesting )
  target_sources(unitTesting PUBLIC
   src/unitTesting.cpp
   )
-target_include_directories(unitTesting PUBLIC "/home/cfd/simon/.local/include")
+target_include_directories(unitTesting PUBLIC
+"/home/cfd/simon/.local/include"
+"${PROJECT_SOURCE_DIR}/include"
+)
 target_link_libraries(unitTesting PUBLIC ${GTEST_LIBRARIES})
 
