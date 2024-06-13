@@ -66,6 +66,42 @@ namespace Kernels{
       return isSymmetricSet;
     }
 
+    bool checkForSymmetryInPointCloud(const std::vector<Point2D>& points, double& a, double& b, double& c){
+      //Assume that the set is not symmetrical to begin with
+      bool isSetSymmetrical = false;
+
+      //Logic: Loop over every pair of non-identical points, construct a perpendicular bisector to a line joining them,
+      //For each point, construct a symmetrical point about this line and check for it's existence in the given set
+      //Even if one point does not have a matching
+      //Loop over pair of points
+      for (int i ={}; i<points.size(); i++){
+        for (int j=i+1; j<points.size(); j++){
+          //Go to next iteration if the points are same.
+          if(points[i]==points[j]) continue;
+          //Compute the sum of x coords of every pair
+          double sumOfXCoords = points[i].m_x + points[j].m_x;
+          //Compute the sum of y coords of every pair
+          double sumOfYCoords = points[i].m_y + points[j].m_y;
+          //Compute the difference of x coords of every pair
+          double diffOfXCoords = points[j].m_x - points[i].m_x;
+          //Compute the difference of y coords of every pair
+          double diffOfYCoords = points[j].m_y - points[i].m_y;
+
+          //Compute coefficients of the perpendicular bisector line
+          // Line form ax + by + c = 0
+          a = 2.0*(diffOfXCoords);
+          b = 2.0*(diffOfYCoords);
+          c = -1.0*(sumOfYCoords*diffOfYCoords + sumOfXCoords*diffOfXCoords);
+
+          //Check for symmetry; break when the first symmetry line is discovered
+          //Continue searching if the current line is not a symmetry line
+          if(isSetSymmetrical = IsSymmetricSet(points, a, b, c))
+            break;
+        }
+      }
+    return isSetSymmetrical;
+  }
+
     //Custom sign function
     template <typename T> int Sign(T val) {
        return (T(0) < val) - (val < T(0));
