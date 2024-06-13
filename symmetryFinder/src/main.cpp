@@ -21,6 +21,7 @@ int main(){
     if(points.size()==0){
       throw std::runtime_error("The point cloud is empty! Please retry again!");
     }
+    //Call a improved method to check for symmetry in the given point cloud
     isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
     //Print to console the final verdit on the symmetry of the pointcloud
