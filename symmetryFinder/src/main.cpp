@@ -7,7 +7,7 @@
 
 int main(){
     //Declare flag variable that indicates whether is the set is symmetrical (default assumption: true)
-    bool isSetSymmetrical = true;
+    bool isSetSymmetrical = false;
     //Declare variables to store the coefficients of the line (ax+by+c=0)
     double a=0.; double b=0.; double c=0.;
 
@@ -46,7 +46,8 @@ int main(){
         c = -1.0*(sumOfYCoords*diffOfYCoords + sumOfXCoords*diffOfXCoords);
 
         //Check for symmetry
-        isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+        if(isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c))
+          break;
       }
     }
     //Print to console the final verdit on the symmetry of the pointcloud
