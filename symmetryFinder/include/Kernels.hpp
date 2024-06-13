@@ -23,7 +23,7 @@ namespace Kernels{
     };
 
     //Routine to construct a reflection of a given point about a given line
-    Point2D constructReflection(const Point2D& inputPoint, const int a, const int b, const int c){
+    Point2D constructReflection(const Point2D& inputPoint, const double a, const double b, const double c){
         double x1 = inputPoint.m_x;
         double y1 = inputPoint.m_y;
         double denom = a * a + b * b;
@@ -34,7 +34,7 @@ namespace Kernels{
     }
 
 
-   bool IsSymmetricSet(const std::vector<Point2D>& points, const int a, const int b, const int c){
+   bool IsSymmetricSet(const std::vector<Point2D>& points, const double a, const double b, const double c){
       //Declare a bool that acts as a flag to indicate if the point cloud is symmetric
       //Default: assume that the set is symmetric
       bool isSymmetricSet = true;

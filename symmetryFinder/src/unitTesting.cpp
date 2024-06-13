@@ -127,31 +127,8 @@ TEST(LargePoint2DCloudSymmetryTest, LargePointCloudSymmetryAboutDiagonalOfACircl
         double y = R * std::sin(theta);
         points.emplace_back(i, x, y); // Create a Point2D and add to vector
     }
+    isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
-    for (int i ={}; i<points.size(); i++){
-      for (int j=i+1; j<points.size(); j++){
-        //Go to next iteration if the points are same.
-        if(points[i]==points[j]) continue;
-
-        //Compute the sum of x coords of every pair
-        double sumOfXCoords = points[i].m_x + points[j].m_x;
-        //Compute the sum of y coords of every pair
-        double sumOfYCoords = points[i].m_y + points[j].m_y;
-        //Compute the difference of x coords of every pair
-        double diffOfXCoords = points[j].m_x - points[i].m_x;
-        //Compute the difference of y coords of every pair
-        double diffOfYCoords = points[j].m_y - points[i].m_y;
-
-        //Compute coefficients of the perpendicular bisector line
-        // Line form ax + by + c = 0
-        a = 2.0*(diffOfXCoords);
-        b = 2.0*(diffOfYCoords);
-        c = -1.0*(sumOfYCoords*diffOfYCoords + sumOfXCoords*diffOfXCoords);
-
-        //Check for symmetry
-        isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
-      }
-    }
     EXPECT_FALSE(isSetSymmetrical);
 }
 
