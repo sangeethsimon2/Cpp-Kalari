@@ -2,6 +2,8 @@
 
 #include<cmath>
 #include<iostream>
+#include <cstdlib>
+#include <ctime>
 
 #include "Point.hpp"
 #include "Kernels.hpp"
@@ -58,8 +60,8 @@ TEST(Point2DCloudSymmetryTest, 2PointsSymmetryAboutAKnownSymmetryLine){
       {2, 1.0, 8.0},
     };
     double a = 2.; double b = -4.; double c = 15.;
-    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
-
+    //bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    bool isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
     EXPECT_TRUE(isSetSymmetrical);
 }
 
@@ -73,7 +75,8 @@ TEST(Point2DCloudSymmetryTest, 3PointsNonSymmetryAboutALine){
       {3, 2.0, 9.0}
     };
     double a = 2.; double b = -4.; double c = 15.;
-    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    //bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    bool isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
     EXPECT_FALSE(isSetSymmetrical);
 }
@@ -89,7 +92,8 @@ TEST(Point2DCloudSymmetryTest, duplicityType1InSymmetryAboutASymmetryLine){
       {2, 1.0, 8.0}
     };
     double a = 2.; double b = -4.; double c = 15.;
-    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    //bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    bool isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
     EXPECT_TRUE(isSetSymmetrical);
 }
@@ -106,11 +110,12 @@ TEST(Point2DCloudSymmetryTest, duplicityType2InSymmetryAboutASymmetryLine){
       {2, 1.0, 8.0}
     };
     double a = 2.; double b = -4.; double c = 15.;
-    bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    //bool isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
+    bool isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
     EXPECT_TRUE(isSetSymmetrical);
 }
-
+//Test to check for symmetry of random set of points on a circle - intended to fail in its current config.
 TEST(LargePoint2DCloudSymmetryTest, LargePointCloudSymmetryAboutDiagonalOfACircle){
     size_t N = 10;
     double R = 1.0;
@@ -127,33 +132,37 @@ TEST(LargePoint2DCloudSymmetryTest, LargePointCloudSymmetryAboutDiagonalOfACircl
         double y = R * std::sin(theta);
         points.emplace_back(i, x, y); // Create a Point2D and add to vector
     }
+    isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
 
-    for (int i ={}; i<points.size(); i++){
-      for (int j=i+1; j<points.size(); j++){
-        //Go to next iteration if the points are same.
-        if(points[i]==points[j]) continue;
-
-        //Compute the sum of x coords of every pair
-        double sumOfXCoords = points[i].m_x + points[j].m_x;
-        //Compute the sum of y coords of every pair
-        double sumOfYCoords = points[i].m_y + points[j].m_y;
-        //Compute the difference of x coords of every pair
-        double diffOfXCoords = points[j].m_x - points[i].m_x;
-        //Compute the difference of y coords of every pair
-        double diffOfYCoords = points[j].m_y - points[i].m_y;
-
-        //Compute coefficients of the perpendicular bisector line
-        // Line form ax + by + c = 0
-        a = 2.0*(diffOfXCoords);
-        b = 2.0*(diffOfYCoords);
-        c = -1.0*(sumOfYCoords*diffOfYCoords + sumOfXCoords*diffOfXCoords);
-
-        //Check for symmetry
-        isSetSymmetrical = Kernels::IsSymmetricSet(points, a, b, c);
-      }
-    }
     EXPECT_FALSE(isSetSymmetrical);
 }
+
+//Test to check for symmetry of random set of points on a unit square centered at 0,0 about its horizontal axis
+TEST(LargePoint2DCloudSymmetryTest, LargePointCloudOnAnUnitSquareSymmetryAboutHorizontalAxis){
+    size_t N = 2;
+    bool isSetSymmetrical = true;
+    double a=0.; double b=0.; double c=0.;
+
+    std::vector<Point2D> points;
+    points.reserve(N); // Reserve space for N points
+
+    std::srand(std::time(0));
+
+    for (size_t i = 0; i < N / 2; ++i) {
+        double x = static_cast<double>(std::rand()) / RAND_MAX - 0.5; // Random x in [-0.5, 0.5]
+        double y = static_cast<double>(std::rand()) / RAND_MAX / 2 - 0.25; // Random y in [-0.25, 0.25)
+
+        // Add point and its reflection
+        points.emplace_back(i, x, y);
+        points.emplace_back(-i, x, -y);
+    }
+    isSetSymmetrical = Kernels::checkForSymmetryInPointCloud(points, a, b, c);
+
+    EXPECT_TRUE(isSetSymmetrical);
+}
+
+
+
 
 //Driver to initiate tests
 int main(int argc, char** argv){
