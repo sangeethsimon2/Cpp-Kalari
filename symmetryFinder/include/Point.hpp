@@ -3,7 +3,8 @@
 
 #include <cmath>
 
-#define epsilon  1e-10
+#define scalingFactor 1e-6
+#define epsilon  1e-7
 
 struct Point2D{
     Point2D() = default;  // Default constructor
