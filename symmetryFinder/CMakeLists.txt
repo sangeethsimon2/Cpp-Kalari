@@ -5,9 +5,7 @@ project(
     VERSION 0.1
 )
 
-#Find necessary packages
-find_package(GTest REQUIRED)
-include_directories(${GTest_INCLUDE_DIRS})
+option(ENABLE_TESTS "Enable_tests" OFF)
 
 
 #Set output directory
@@ -21,16 +19,22 @@ add_executable( symmetryFinder )
 #Project include files
 target_include_directories(symmetryFinder PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
-#Executable for unitTesting
-add_executable( unitTesting )
- target_sources(unitTesting PUBLIC
-  src/unitTesting.cpp
-  )
-#include gtest headers, project headers
-target_include_directories(unitTesting PUBLIC
-"/home/cfd/simon/.local/include"
-"${PROJECT_SOURCE_DIR}/include"
-)
-#Link against gtest static libraries
-target_link_libraries(unitTesting PUBLIC ${GTEST_LIBRARIES})
+if(ENABLE_TESTS)
+  #Find necessary packages
+  find_package(GTest REQUIRED)
+  include_directories(${GTest_INCLUDE_DIRS})
 
+
+  #Executable for unitTesting
+  add_executable( unitTesting )
+  target_sources(unitTesting PUBLIC
+    src/unitTesting.cpp
+  )
+  #include gtest headers, project headers
+  target_include_directories(unitTesting PUBLIC
+  "/home/cfd/simon/.local/include"
+  "${PROJECT_SOURCE_DIR}/include"
+  )
+  #Link against gtest static libraries
+  target_link_libraries(unitTesting PUBLIC ${GTEST_LIBRARIES})
+endif()
