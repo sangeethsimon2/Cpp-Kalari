@@ -2,10 +2,13 @@
 #define POINTHEADER
 
 #include <cmath>
-
+#define scalingFactor 1e-6
 #define epsilon  1e-10
 
 struct Point2D{
+    //Default ctor
+    Point2D() = default;  // Default constructor
+
     //CTOR
     Point2D(int index, double x, double y ): m_Index(index), m_x(x), m_y(y) {}
 
@@ -15,7 +18,7 @@ struct Point2D{
      }
     //Members
     int m_Index;
-    double m_x, m_y;
+    double m_x=0.; double m_y=0.;
 };
 
 #endif
