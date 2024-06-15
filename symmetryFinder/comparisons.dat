@@ -1,0 +1,8 @@
+cpu:Intel(R) Xeon(R) Gold 6140 CPU @ 2.30GHz
+
+experiement                  size               basic version             improved version
+Square symmetry(random pts)  1000               102501 ms                     1374 ms
+Circle nonsymm(random pts)   1000               199582 ms                     198937 ms
+Circle symmetry              1000               1206 ms                       1437 ms
+Circle symmetry              2000               4794ms                        6829 ms
+Square symmetry(random)      5000               30766 ms- 3h 20min            97100 ms
