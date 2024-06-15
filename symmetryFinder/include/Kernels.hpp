@@ -8,13 +8,28 @@
 namespace Kernels{
 
    //Custom hashfunction that maps 2 coordinates to a size_t value
-    struct hashFunc{
+    struct hashFunc_floatkey{
         size_t operator()(const Point2D& otherPoint) const{
         size_t h1 = std::hash<double>()(otherPoint.m_x);
         size_t h2 = std::hash<double>()(otherPoint.m_y);
         return (h1 ^ (h2 << 1));
         }
     };
+
+    // Custom hash function that converts the double valued coord pair into in valued pair
+    struct hashFunc_longlongintkey {
+      size_t operator()(const Point2D& otherPoint) const {
+        //  the coordinates
+        long long _intEqX = static_cast<long long>(std::round(otherPoint.m_x / scalingFactor));
+        long long _intEqY = static_cast<long long>(std::round(otherPoint.m_y / scalingFactor));
+
+        // Hash the quantized coordinates
+        size_t h1 = std::hash<long long>()(_intEqX);
+        size_t h2 = std::hash<long long>()(_intEqY);
+
+        return (h1 ^ (h2 << 1));
+      }
+   };
 
    //Custom equality function to allow key comparisons
     struct equalFunc{
@@ -40,7 +55,7 @@ namespace Kernels{
       //Default: assume that the set is symmetric
       bool b_isSymmetricSet = true;
       //Declare an unordered_map that has key: Point2D and value: number of times the point is encountered
-      std::unordered_map<Point2D, int, hashFunc, equalFunc> Point2DSet;
+      std::unordered_map<Point2D, int, hashFunc_longlongintkey, equalFunc> Point2DSet;
 
       //For each new point encountered from the container, increment a counter to indicate its presence
       for(const auto& eachPoint: points)
@@ -73,11 +88,11 @@ namespace Kernels{
       //Map to store the mid points of all pairs of points;
       //key=hash(Point2D), value=(count, xcoord, ycoord)
       //Count expresses a ranking system that signifies how probable a midpoint lies on a symmetry line for this set
-      std::unordered_map<Point2D, std::tuple<int, Point2D>, hashFunc, equalFunc> midPointMap;
+      std::unordered_map<Point2D, std::tuple<int, Point2D>, hashFunc_longlongintkey, equalFunc> midPointMap;
 
       //Map to store the coefficient triplet of perpendicular bisector line of every pair of points
       //key = hash(Point2D), value=(a, b c)
-      std::unordered_map<Point2D, std::tuple<double, double, double>, hashFunc, equalFunc> perpBisecCoefficientsMap;
+      std::unordered_map<Point2D, std::tuple<double, double, double>, hashFunc_longlongintkey, equalFunc> perpBisecCoefficientsMap;
 
       //Logic for Step 1:
       //Loop over every pair of non-identical points,
