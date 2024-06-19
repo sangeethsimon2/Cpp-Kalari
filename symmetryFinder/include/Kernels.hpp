@@ -16,7 +16,7 @@ namespace Kernels{
         }
     };
 
-    // Custom hash function that converts the double valued coord pair into in valued pair
+   // Custom hash function that converts the double valued coord pair into in valued pair
     struct hashFunc_longlongintkey {
       size_t operator()(const Point2D& otherPoint) const {
         //  the coordinates
@@ -34,7 +34,7 @@ namespace Kernels{
    //Custom equality function to allow key comparisons
     struct equalFunc{
         bool operator() ( const Point2D& firstPoint, const Point2D& secondPoint) const{
-          return ( (std::fabs(firstPoint.m_x-secondPoint.m_x)<epsilon) && (std::fabs(firstPoint.m_y-secondPoint.m_y)<epsilon));
+          return ( (std::fabs(firstPoint.m_x-secondPoint.m_x)<ComparisonEpsilon) && (std::fabs(firstPoint.m_y-secondPoint.m_y)<ComparisonEpsilon));
         }
     };
 

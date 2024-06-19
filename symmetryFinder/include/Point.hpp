@@ -4,7 +4,7 @@
 #include <cmath>
 
 #define scalingFactor 1e-6
-#define epsilon  1e-7
+#define ComparisonEpsilon  1e-7
 
 struct Point2D{
     Point2D() = default;  // Default constructor
@@ -14,7 +14,7 @@ struct Point2D{
 
     //Overload '==' for equality between points
     bool operator == (const Point2D& otherPoint)const{
-     return (std::fabs(m_x - otherPoint.m_x) < epsilon && std::fabs(m_y - otherPoint.m_y) < epsilon);
+     return (std::fabs(m_x - otherPoint.m_x) < ComparisonEpsilon && std::fabs(m_y - otherPoint.m_y) < ComparisonEpsilon);
     }
     //Members
     int m_Index;

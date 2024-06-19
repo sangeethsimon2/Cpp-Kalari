@@ -5,6 +5,10 @@
 #include "Point.hpp"
 #include "Kernels.hpp"
 
+#include <../include/Eigen/Dense>
+#include <../include/Eigen/SVD>
+
+
 int main(){
     //Declare flag variable that indicates whether is the set is symmetrical (default assumption: false)
     bool isSetSymmetrical = false;
