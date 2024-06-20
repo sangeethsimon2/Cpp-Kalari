@@ -6,7 +6,12 @@ project(
 )
 
 option(ENABLE_TESTS "Enable_tests" OFF)
+option(ENABLE_DEBUG "Enable debug" OFF)
 
+# Pass the DEBUG option to the compiler if enabled
+if(ENABLE_DEBUG)
+  add_definitions(-DDEBUG)
+endif()
 
 #Set output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/app")
