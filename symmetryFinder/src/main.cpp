@@ -1,24 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <iomanip>
 
 #include "Point.hpp"
 #include "Kernels.hpp"
 
-#include <../include/Eigen/Dense>
-#include <../include/Eigen/SVD>
-
-
 int main(){
     //Declare flag variable that indicates whether is the set is symmetrical (default assumption: false)
-    bool isSetSymmetrical = false;
+    bool isSetSymmetrical = true;
     //Declare variables to store the coefficients of the line (ax+by+c=0)
     double a=0.; double b=0.; double c=0.;
+    //Declare a Variable to store the centroid points
+    double x_centroid = 0.; double y_centroid = 0.;
 
-    //Define a sample set of points constituting a point cloud on a plane
+    //Define a set of point to check for symmetry
     std::vector<Point2D> points{
-      {1, 4.0, 2.0},
-      {2, 1.0, 8.0},
+      {1, 1., 1.},
+      {2, 1., -1.},
     };
 
     //Ensure that the point cloud is not empty
@@ -35,6 +34,5 @@ int main(){
       std::cout<<" Unable to find a line of symmetry for the given point cloud \n";
 
     return 0;
-
 }
 
